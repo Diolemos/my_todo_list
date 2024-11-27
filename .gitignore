@@ -1,0 +1,38 @@
+# Node modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/*.pid
+pids/*.pid.lock
+
+# Dependency directories
+jspm_packages/
+
+# Dist folder (output directory for builds)
+dist/
+
+# IDE-specific files (optional, add/remove based on your IDE)
+.vscode/
+.idea/
+*.swp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Lock files
+yarn.lock
+package-lock.json
+
+# Miscellaneous
+*.log
+*.cache
+*.tmp
+
+# Webpack-specific
+*.webpack.config.*.js
