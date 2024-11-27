@@ -1,3 +1,23 @@
-body{
-    background-color: teal;
+html{
+    width: 100vw;
+    min-height: 100vh;
+
+    background-color: brown;
 }
+
+body{
+    height: 100%;
+    display: grid;
+   
+
+    grid-template-areas:
+    'header header '
+    'sideBar main ';
+
+}
+.header { grid-area: header;
+background-color: teal; }
+.sideBar { grid-area: sideBar;
+background-color: aquamarine; }
+.main { grid-area: main; 
+background-color: bisque;}
