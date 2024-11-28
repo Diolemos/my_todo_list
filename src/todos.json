@@ -1,0 +1,19 @@
+[{"title": "Wash cat",
+"description": "Clean my feline using soap and water",
+"dueDate": "2024-11-28T14:00:00.000Z",
+"checked": false,
+"priority":"high"
+},
+{"title": "Implement Local storage",
+"description": "",
+"dueDate": "2024-11-30T14:00:00.000Z",
+"checked": false,
+"priority":"normal"
+},
+{"title": "Buy Groceries",
+"description": "Buy goody goodies at the nearest wholesale market",
+"dueDate": "",
+"checked": true,
+"priority":"low"
+}
+]
