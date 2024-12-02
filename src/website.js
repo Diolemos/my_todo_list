@@ -1,5 +1,5 @@
 import todos from './/todos.json' ;
-
+import createHeader from './Header';
 
 function createMain() {
     const main = document.createElement("main");
@@ -9,19 +9,7 @@ function createMain() {
   }
   
 
-function createHeader() {
-    const header = document.createElement("header");
-    header.classList.add("header");
-  
-    const appHeader = document.createElement("h1");
-    appHeader.classList.add("appHeader");
-    appHeader.textContent = "My Todo-list";
-  
-    header.appendChild(appHeader);
-    //header.appendChild(createNav());
-  
-    return header;
-  }
+
   function createSideBar(){
     const sideBar = document.createElement("div");
     sideBar.classList.add("sideBar");
@@ -94,18 +82,24 @@ function createHeader() {
             dueDateEl.textContent = todo.dueDate || ""; // Default to empty string
             todoItemEl.appendChild(dueDateEl);
     
-            // Set default values for `done` and `priority` if not present
-            const isDone = todo.done ?? false;
+            // Set default values for `completed` and `priority` if not present
+            const isCompleted = todo.checked ?? false;
             const priority = todo.priority || "normal";
     
-            // Create and append a checkbox for the `done` status
-            const doneCheckboxEl = document.createElement("input");
-            doneCheckboxEl.type = "checkbox";
-            doneCheckboxEl.checked = isDone; // Default to false
-            doneCheckboxEl.classList.add("done-checkbox");
-            todoItemEl.appendChild(doneCheckboxEl);
-    
+            // switch completed status on doubleClick
+            todoItemEl.addEventListener("click", e => {
+              console.log("toggle checked");
+              if (todoItemEl.classList.contains("checked")) {
+                  todoItemEl.classList.remove("checked");
+                  // TODO: change the object on local storage/database
+              } else {
+                  todoItemEl.classList.add("checked");
+                  // TODO: change the object on local storage/database
+              }
+          });
+
             // Create and append a priority indicator
+            //TODO: HIDE PRIORITY INFORMATION BUT ADD CLASS FOR STYLING
             const priorityEl = document.createElement("div");
             priorityEl.classList.add("priority", `priority-${priority.toLowerCase()}`);
             priorityEl.textContent = `Priority: ${priority}`;
