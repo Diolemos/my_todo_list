@@ -5,12 +5,12 @@ import createSideBar from "./SideBar";
 import storageManager from "./StorageManager";
 
 const initializeData = () => {
-  if (!storageManager.getTodos().length) {
-    storageManager.saveTodos(todos);
+  if (localStorage.getItem('todos') === null) {
+    storageManager.saveTodos(hardcodedTodos);
   }
 
-  if (!storageManager.getProjectNames().length) {
-    storageManager.saveProjectNames(projects);
+  if (localStorage.getItem('projectNames') === null) {
+    storageManager.saveProjectNames(hardcodedProjectNames);
   }
 };
 
