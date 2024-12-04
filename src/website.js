@@ -6,11 +6,11 @@ import storageManager from "./StorageManager";
 
 const initializeData = () => {
   if (localStorage.getItem('todos') === null) {
-    storageManager.saveTodos(hardcodedTodos);
+    storageManager.saveTodos(todos);
   }
 
   if (localStorage.getItem('projectNames') === null) {
-    storageManager.saveProjectNames(hardcodedProjectNames);
+    storageManager.saveProjectNames(projects);
   }
 };
 
