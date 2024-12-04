@@ -1,6 +1,6 @@
 import todos from './/todos.json' ;
 import createHeader from './Header';
-
+import createSideBar from './SideBar';
 function createMain() {
     const main = document.createElement("main");
     main.classList.add("main");
@@ -10,16 +10,7 @@ function createMain() {
   
 
 
-  function createSideBar(){
-    const sideBar = document.createElement("div");
-    sideBar.classList.add("sideBar");
-    const sideBarTitle = document.createElement("h3");
-    sideBarTitle.classList.add("sideBarTitle");
-    sideBarTitle.textContent = "Projects";
-    sideBar.appendChild(sideBarTitle);
-    sideBar.appendChild(createNav())
-    return sideBar;
-  }
+
   
   function createNav() {
     const nav = document.createElement("nav");
@@ -61,16 +52,16 @@ function createMain() {
             // Skip todos without a title
             if (!todo.title) return;
     
-            // Create a list item for the todo
+            
             const todoItemEl = document.createElement("li");
             todoItemEl.classList.add("card");
     
-            // Create and append the title element
+           
             const titleEl = document.createElement("h3");
             titleEl.textContent = todo.title;
             todoItemEl.appendChild(titleEl);
     
-            // Create and append the description element
+            
             const descriptionEl = document.createElement("div");
             descriptionEl.classList.add("description");
             descriptionEl.textContent = todo.description || ""; // Default to empty string
@@ -83,6 +74,7 @@ function createMain() {
             todoItemEl.appendChild(dueDateEl);
     
             // Set default values for `completed` and `priority` if not present
+            //TODO: do something if overdue ? add class priority_high ?
             const isCompleted = todo.checked ?? false;
             const priority = todo.priority || "normal";
     
@@ -104,7 +96,16 @@ function createMain() {
             priorityEl.classList.add("priority", `priority-${priority.toLowerCase()}`);
             priorityEl.textContent = `Priority: ${priority}`;
             todoItemEl.appendChild(priorityEl);
-    
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "X"
+            deleteBtn.addEventListener("click",(event)=>{
+              event.stopPropagation();
+              if(confirm("Are you sure?")) {  
+                todoItemEl.remove();
+                //TODO: update localstorage/database
+}            });
+            todoItemEl.appendChild(deleteBtn);
             // Append the todo item to the list
             todosListEl.appendChild(todoItemEl);
         });
@@ -116,7 +117,7 @@ function createMain() {
 function initializeWebsite(){
     const body = document.body;
     body.appendChild(createHeader());
-    body.appendChild(createSideBar());
+    body.appendChild(createSideBar(createNav));
     const nav = document.querySelector("nav");
     nav.appendChild(createNavBtn("Default"));
     body.appendChild(createMain().appendChild(loadTodos(todos,"default")));
