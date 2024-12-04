@@ -24,14 +24,29 @@ function createMain() {
     button.classList.add("button-nav", `button-${btnName.toLowerCase()}` );
     button.textContent = btnName;
     
-  
+    function setActiveBtn(button) {
+      const buttons = document.querySelectorAll(".button-nav");
+      
+      buttons.forEach((button) => {
+        if (button !== this) {
+          button.classList.remove("active");
+        }
+      });
+    
+      button.classList.add("active");
+    }
     
     button.addEventListener("click", (e) => {
       if (e.target.classList.contains("active")) return;
+      
       //setActiveButton(e.target); //
-      //TODO run the upcoming function 'setActiveBtn()'
-      //for now, there will only be one button
-      //TODO LoadProject()
+    setActiveBtn(button);
+    const main = document.querySelector("main")
+    main.innerHTML = "";
+    main.appendChild(loadTodos(todos,e.target.textContent))
+     
+    
+      
     });
     return button;
     }
@@ -45,7 +60,7 @@ function createMain() {
         const todosListEl = document.createElement("ul");
         todosListEl.classList.add("todos-list");
         
-
+        console.log(filteredTodos)
 
 
         filteredTodos.forEach((todo) => {
@@ -112,18 +127,24 @@ function createMain() {
     
         return todosListEl; // Return the list so it can be appended to the DOM
     }
+
+    const projects = ["default", "gaming", "studying"] ;
   
 
-function initializeWebsite(){
+function initializeWebsite(projectName){
     const body = document.body;
     body.appendChild(createHeader());
     body.appendChild(createSideBar(createNav));
     const nav = document.querySelector("nav");
-    nav.appendChild(createNavBtn("Default"));
-    body.appendChild(createMain().appendChild(loadTodos(todos,"default")));
-
+    projects.forEach(project => {
+      nav.appendChild(createNavBtn(project));
+    });
+   const main = createMain();
    
-}
+    main.appendChild(loadTodos(todos,projectName));
+    
+    body.appendChild(main)
+   
 
 
 
@@ -133,5 +154,5 @@ function initializeWebsite(){
 
 
 
-
-export default initializeWebsite;
+  }
+export default initializeWebsite; 
