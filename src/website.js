@@ -171,7 +171,13 @@ function initializeWebsite(projectName) {
   const main = createMain();
 
   main.appendChild(loadTodos(todos, projectName));
-
+  const addTodoBtn = document.createElement("button");
+  addTodoBtn.textContent = "+ ";
+  addTodoBtn.classList.add("addTodo");
+  addTodoBtn.addEventListener("click",()=>{
+    console.log("Add todo btn")
+  })
+  main.appendChild(addTodoBtn);
   body.appendChild(main);
 }
 export default initializeWebsite;
