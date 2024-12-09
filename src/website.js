@@ -1,25 +1,23 @@
 import todos from ".//todos.json";
-import projects from "./projects.json"
+import projects from "./projects.json";
 import createHeader from "./Header";
 import createSideBar from "./SideBar";
 import storageManager from "./StorageManager";
 import AddTodoModal from "./AddTodoModal";
 
 const initializeData = () => {
-  if (localStorage.getItem('todos') === null) {
+  if (localStorage.getItem("todos") === null) {
     storageManager.saveTodos(todos);
   }
 
-  if (localStorage.getItem('projectNames') === null) {
+  if (localStorage.getItem("projectNames") === null) {
     storageManager.saveProjectNames(projects);
   }
 };
 
 initializeData();
- todos = storageManager.getTodos();
- projects = storageManager.getProjectNames();
-
-
+todos = storageManager.getTodos();
+projects = storageManager.getProjectNames();
 
 function createMain() {
   const main = document.createElement("main");
@@ -39,7 +37,7 @@ function createNavBtn(btnName) {
   const button = document.createElement("button");
   button.classList.add("button-nav", `button-${btnName.toLowerCase()}`);
   button.textContent = btnName;
-
+  button.dataset.projectName = btnName;
   function setActiveBtn(button) {
     const buttons = document.querySelectorAll(".button-nav");
 
@@ -58,7 +56,7 @@ function createNavBtn(btnName) {
     //setActiveButton(e.target); //
     setActiveBtn(button);
     const main = document.querySelector("main");
-    main.innerHTML = "";
+    main.innerHTML = ""; //clear main el
     main.appendChild(loadTodos(todos, e.target.textContent));
   });
   return button;
@@ -69,7 +67,7 @@ function loadTodos(todos, project) {
     if (!todo.title) return false;
     return todo.project === project;
   });
-
+  
   const todosListEl = document.createElement("ul");
   todosListEl.classList.add("todos-list");
 
@@ -78,7 +76,7 @@ function loadTodos(todos, project) {
   filteredTodos.forEach((todo) => {
     // Skip todos without a title
     if (!todo.title) return;
-
+   
     const todoItemEl = document.createElement("li");
     todoItemEl.classList.add("card");
 
@@ -126,19 +124,19 @@ function loadTodos(todos, project) {
     deleteBtn.addEventListener("click", (event) => {
       event.stopPropagation();
       if (confirm("Are you sure?")) {
-        console.log(todoItemEl)
+        console.log(todoItemEl);
         todoItemEl.remove();
         const todoTitle = todoItemEl.querySelector("h3").textContent;
 
         // Retrieve todos from localStorage
         let todos = storageManager.getTodos();
-    
+
         // Filter out the todo to be deleted
         todos = todos.filter((todo) => todo.title !== todoTitle);
-    
+
         // Update localStorage
         storageManager.saveTodos(todos);
-    
+
         console.log(`Todo "${todoTitle}" deleted successfully`);
       }
     });
@@ -146,29 +144,20 @@ function loadTodos(todos, project) {
     // Append the todo item to the list
     todosListEl.appendChild(todoItemEl);
   });
-
+ 
   return todosListEl; // Return the list so it can be appended to the DOM
 }
 
-
-
-
-
-
-
 function initializeWebsite(projectName) {
-
-  
-
   const body = document.body;
   body.appendChild(createHeader());
   body.appendChild(createSideBar(createNav));
   const nav = document.querySelector("nav");
 
-
   projects.forEach((project) => {
     nav.appendChild(createNavBtn(project));
   });
+  nav.querySelectorAll(".button-nav")[0].classList.add("active");
   body.appendChild(AddTodoModal.createElement());
   const main = createMain();
 
@@ -176,14 +165,52 @@ function initializeWebsite(projectName) {
   const addTodoBtn = document.createElement("button");
   addTodoBtn.textContent = "+ ";
   addTodoBtn.classList.add("addTodo");
-  addTodoBtn.addEventListener("click",()=>{
-    const modal = document.querySelector('.modal');
+  const modal = document.querySelector(".modal");
+  addTodoBtn.addEventListener("click", () => {
     AddTodoModal.show(modal);
-  })
+  });
   const form = modal.querySelector(".todo-form");
-form.addEventListener("submit", (event) => {
-  // Handle submit logic here
-});
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+  
+    const title = form.querySelector("#todo-title").value.trim();
+    const description = form.querySelector("#todo-description").value.trim();
+    const dueDate = form.querySelector("#todo-dueDate").value
+      ? new Date(form.querySelector("#todo-dueDate").value).toISOString()
+      : null;
+    const priority = form.querySelector("#todo-priority").value;
+  
+    const activeProject = nav.querySelector(".button-nav.active");
+    if (!activeProject) {
+      alert("Please select a project first.");
+      return;
+    }
+  
+    const projectName = activeProject.dataset.projectName;
+  
+    const todo = {
+      title,
+      description,
+      priority,
+      dueDate,
+      project: projectName,
+      checked: false,
+    };
+  
+    console.log("New Todo:", todo);
+  
+    todos = storageManager.getTodos();
+    todos.push(todo);
+    storageManager.saveTodos(todos);
+  
+    const main = document.querySelector("main");
+    main.innerHTML = ""; // Clear main element
+  
+    const todoListEl = loadTodos(todos, projectName); // Get todos for the active project
+    main.appendChild(todoListEl);
+  
+    AddTodoModal.hide(modal); 
+  });
   main.appendChild(addTodoBtn);
   body.appendChild(main);
 }

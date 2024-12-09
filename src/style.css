@@ -31,6 +31,8 @@ background-color: bisque;}
     transform: translate(-50%, -50%);
     transition: opacity 0.3s ease, visibility 0.3s ease;
     z-index: 1000; 
+
+    background-color: beige;
   }
 
   .modal.show {
