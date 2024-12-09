@@ -3,6 +3,7 @@ import projects from "./projects.json"
 import createHeader from "./Header";
 import createSideBar from "./SideBar";
 import storageManager from "./StorageManager";
+import AddTodoModal from "./AddTodoModal";
 
 const initializeData = () => {
   if (localStorage.getItem('todos') === null) {
@@ -168,6 +169,7 @@ function initializeWebsite(projectName) {
   projects.forEach((project) => {
     nav.appendChild(createNavBtn(project));
   });
+  body.appendChild(AddTodoModal.createElement());
   const main = createMain();
 
   main.appendChild(loadTodos(todos, projectName));
@@ -175,7 +177,8 @@ function initializeWebsite(projectName) {
   addTodoBtn.textContent = "+ ";
   addTodoBtn.classList.add("addTodo");
   addTodoBtn.addEventListener("click",()=>{
-    console.log("Add todo btn")
+    const modal = document.querySelector('.modal');
+    AddTodoModal.show(modal);
   })
   main.appendChild(addTodoBtn);
   body.appendChild(main);
