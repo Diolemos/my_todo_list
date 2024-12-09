@@ -180,6 +180,10 @@ function initializeWebsite(projectName) {
     const modal = document.querySelector('.modal');
     AddTodoModal.show(modal);
   })
+  const form = modal.querySelector(".todo-form");
+form.addEventListener("submit", (event) => {
+  // Handle submit logic here
+});
   main.appendChild(addTodoBtn);
   body.appendChild(main);
 }
