@@ -4,16 +4,8 @@ import createHeader from "./Header";
 import createSideBar from "./SideBar";
 import storageManager from "./StorageManager";
 import AddTodoModal from "./AddTodoModal";
+import { initializeData } from "./utils/DataInitializer";
 
-const initializeData = () => {
-  if (localStorage.getItem("todos") === null) {
-    storageManager.saveTodos(todos);
-  }
-
-  if (localStorage.getItem("projectNames") === null) {
-    storageManager.saveProjectNames(projects);
-  }
-};
 
 initializeData();
 todos = storageManager.getTodos();
