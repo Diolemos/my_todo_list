@@ -6,6 +6,7 @@ import storageManager from "./StorageManager";
 import AddTodoModal from "./AddTodoModal";
 import { initializeData } from "./utils/DataInitializer";
 import { createMain, updateMain } from "./components/Main";
+import { CreateAddTodoBtn } from "./components/AddBtn";
 
 initializeData();
 todos = storageManager.getTodos();
@@ -149,14 +150,8 @@ function initializeWebsite(projectName) {
   const main = createMain();
 
   main.appendChild(loadTodosByProject(todos, projectName));
-  const addTodoBtn = document.createElement("button");
-  addTodoBtn.textContent = "+ ";
-  addTodoBtn.classList.add("addTodo");
-  const modal = document.querySelector(".modal");
-  addTodoBtn.addEventListener("click", () => {
-    AddTodoModal.show(modal);
-  });
-  const form = modal.querySelector(".todo-form");
+  const addTodoBtn = CreateAddTodoBtn();
+  const form = document.querySelector(".todo-form");
   form.addEventListener("submit", (event) => {
     event.preventDefault();
   
@@ -195,8 +190,8 @@ function initializeWebsite(projectName) {
   
     const todoListEl = loadTodosByProject(todos, projectName); // Get todos for the active project
     main.appendChild(todoListEl);
-  
-    AddTodoModal.hide(modal); 
+    main.appendChild(CreateAddTodoBtn());
+    AddTodoModal.hide(document.querySelector(".modal")); 
   });
   main.appendChild(addTodoBtn);
   body.appendChild(main);
