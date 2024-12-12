@@ -5,18 +5,13 @@ import createSideBar from "./SideBar";
 import storageManager from "./StorageManager";
 import AddTodoModal from "./AddTodoModal";
 import { initializeData } from "./utils/DataInitializer";
-
+import { createMain, updateMain } from "./components/Main";
 
 initializeData();
 todos = storageManager.getTodos();
 projects = storageManager.getProjectNames();
 
-function createMain() {
-  const main = document.createElement("main");
-  main.classList.add("main");
-  main.setAttribute("id", "main");
-  return main;
-}
+
 
 function createNav() {
   const nav = document.createElement("nav");
@@ -49,12 +44,12 @@ function createNavBtn(btnName) {
     setActiveBtn(button);
     const main = document.querySelector("main");
     main.innerHTML = ""; //clear main el
-    main.appendChild(loadTodos(todos, e.target.textContent));
+    main.appendChild(loadTodosByProject(todos, e.target.textContent));
   });
   return button;
 }
 
-function loadTodos(todos, project) {
+function loadTodosByProject(todos, project) {
   const filteredTodos = todos.filter((todo) => {
     if (!todo.title) return false;
     return todo.project === project;
@@ -153,7 +148,7 @@ function initializeWebsite(projectName) {
   body.appendChild(AddTodoModal.createElement());
   const main = createMain();
 
-  main.appendChild(loadTodos(todos, projectName));
+  main.appendChild(loadTodosByProject(todos, projectName));
   const addTodoBtn = document.createElement("button");
   addTodoBtn.textContent = "+ ";
   addTodoBtn.classList.add("addTodo");
@@ -198,7 +193,7 @@ function initializeWebsite(projectName) {
     const main = document.querySelector("main");
     main.innerHTML = ""; // Clear main element
   
-    const todoListEl = loadTodos(todos, projectName); // Get todos for the active project
+    const todoListEl = loadTodosByProject(todos, projectName); // Get todos for the active project
     main.appendChild(todoListEl);
   
     AddTodoModal.hide(modal); 
